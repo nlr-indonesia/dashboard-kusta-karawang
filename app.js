@@ -267,7 +267,7 @@ function renderRingkasan() {
         <div class="foot"><a href="#" id="goCompare">Lihat semua puskesmas →</a></div>
       </div>
     </div>
-    ${srcLine('Batas &lt;5% dan target 80% / 90% mengikuti dashboard program kusta Jawa Timur.')}`;
+    ${srcLine()}`;
   $('#view').innerHTML = html;
   bindFilters();
   const gc = $('#goCompare'); if (gc) gc.onclick = (e) => { e.preventDefault(); S.tab = 'perbandingan'; renderTabs(); render(); };
@@ -567,7 +567,7 @@ function subRingkasanIntervensi() {
       ${groupBars(monItems, [{ name: 'Bina DESAKU', color: C.teal }, { name: 'KOTAKU', color: C.orange }])}
     </div>
     <div class="two">${miniTable('Bina DESAKU', C.teal, dRows)}${miniTable('KOTAKU', C.orange, kRows)}</div>
-    ${srcLine('Data per 100.000 memakai penduduk Data Dasar SIPK; beberapa nilai penduduk yang tertulis sama persis antar puskesmas perlu dicek.')}`;
+    ${srcLine()}`;
   $('#subview').innerHTML = html;
   bindFilters();
 }
@@ -653,7 +653,7 @@ function subIndicator(prog) {
     }), per)])}
     ${sections}
     <div class="panel" style="margin-top:16px"><h3>Capaian per puskesmas ${dn(prog)}, ${periodMeta.label || per}</h3>${tableFor(per)}</div>
-    ${srcLine('Laporan Triwulan Bina Desa/Kota Sahabat Kusta Kabupaten Karawang, diinput oleh tim program. Indikator mengikuti Lampiran 4. Y1 adalah data setahun; triwulan tidak bisa langsung dijumlahkan atau dibandingkan dengan Y1.')}`;
+    ${srcLine('Laporan Triwulan Bina Desa/Kota Sahabat Kusta Kabupaten Karawang.')}`;
   $('#subview').innerHTML = html;
   const sel = $('#fIndP'); if (sel) sel.onchange = () => { S.indPeriod = sel.value; renderIntervensi(); };
   bindFilters();
@@ -714,7 +714,7 @@ function dataThrough() {
   return MONTHS[dt.month - 1] + ' ' + dt.year;
 }
 function srcLine(extra) {
-  return `<div class="src">Sumber: Data Anonim Register SIPK Karawang per ${SUMBER_PER}, diolah menjadi angka agregat. Tanpa nama dan alamat pasien.
+  return `<div class="src">Sumber: Data Anonim Register SIPK Karawang per ${SUMBER_PER}.
     Diperbarui otomatis; pembaruan terakhir ${fmtGen(D.meta.generated_at)}. ${extra || ''}</div>`;
 }
 function fmtGen(iso) {
