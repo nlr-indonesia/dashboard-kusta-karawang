@@ -1,0 +1,62 @@
+name: Perbarui & terbitkan dashboard
+
+# Kapan dijalankan:
+#  - schedule : otomatis sesuai jadwal (lihat cron di bawah)
+#  - workflow_dispatch : tombol "Run workflow" manual di tab Actions
+#  - push : setiap kali kode dashboard diubah di branch main
+on:
+  schedule:
+    # Setiap hari pukul 22:00 UTC = 05:00 WIB.
+    # Untuk tiap jam, ganti jadi:  - cron: "0 * * * *"
+    - cron: "0 22 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+# Izin yang dibutuhkan untuk menerbitkan ke GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Biar tidak ada dua deploy bertabrakan
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v4
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Tarik data dari Google Sheets -> data.json
+        env:
+          # Opsional: set Variable bernama SHEET_ID di repo bila ID sheet berubah.
+          # Kalau kosong, build.py memakai ID bawaan di dalam kodenya.
+          SHEET_ID: ${{ vars.SHEET_ID }}
+        run: python build.py
+
+      - name: Susun folder situs
+        run: |
+          mkdir -p _site
+          cp index.html styles.css app.js data.json _site/
+          cp -r vendor _site/
+
+      - name: Unggah artefak situs
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Terbitkan ke GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
