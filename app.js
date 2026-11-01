@@ -286,6 +286,7 @@ function renderPerbandingan() {
   let rows = pkmRows(y, p);
   const reporting = rows.filter(r => r.baru > 0).length;
   const anakPkm = rows.filter(r => r.anak > 0).map(r => r.name);
+  const nolPkm = rows.filter(r => r.baru === 0).map(r => r.name).sort((x, y) => x.localeCompare(y));
   const sortKey = S.sort;
   rows.sort((a, b) => sortKey === 'nama' ? a.name.localeCompare(b.name) :
     sortKey === 'per100k' ? b.per100k - a.per100k : b[sortKey] - a[sortKey]);
@@ -301,7 +302,8 @@ function renderPerbandingan() {
       <div class="card kpi"><div class="lbl">Puskesmas yang melaporkan kasus baru</div>
         <div class="val">${reporting} <span style="font-size:18px;color:var(--muted);font-weight:600">dari ${D.puskesmas.length}</span></div></div>
       <div class="card kpi"><div class="lbl">Puskesmas belum ada kasus baru</div>
-        <div class="val">${D.puskesmas.length - reporting}</div></div>
+        <div class="val">${D.puskesmas.length - reporting}</div>
+        <div class="sub" style="font-size:14px;color:var(--ink);font-weight:700;margin-top:6px">${nolPkm.length ? esc(nolPkm.join(', ')) : '-'}</div></div>
       <div class="card kpi"><div class="lbl">Kasus baru anak (&lt;15 th) ditemukan di ${anakPkm.length} puskesmas</div>
         <div class="sub" style="font-size:14px;color:var(--ink);font-weight:700;margin-top:6px">${anakPkm.length ? esc(anakPkm.join(', ')) : '-'}</div></div>
     </div>
