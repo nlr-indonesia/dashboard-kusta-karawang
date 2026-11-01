@@ -6,7 +6,7 @@ lewat tautan dan **diperbarui otomatis** dari Google Sheets.
 
 Isi: 6 tab — Ringkasan, Perbandingan puskesmas, Peta sebaran, Data per
 puskesmas, Status eliminasi, dan Puskesmas intervensi (dengan sub-halaman
-Ringkasan intervensi, Indikator DESAKU, Indikator KOTAKU, Peta per desa).
+Ringkasan intervensi, Indikator Bina DESAKU, Indikator KOTAKU, Peta per desa).
 
 ---
 

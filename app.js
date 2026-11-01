@@ -27,57 +27,60 @@ const PERIOD_MONTHS = {
   Q1: [1,2,3], Q2: [4,5,6], Q3: [7,8,9], Q4: [10,11,12],
 };
 
+/* nama tampilan program (kode data tetap 'DESAKU') */
+const dn = g => g === 'DESAKU' ? 'Bina DESAKU' : g;
+
 /* ---------- peta label indikator (dari struktur laporan) ---------- */
 const IND = {
   DESAKU: {
-    full: 'DESAKU (Desa Sahabat Kusta)',
+    full: 'Bina DESAKU (Desa Sahabat Kusta)',
     dasar: [['D01', 'Penduduk puskesmas yang menjalankan Bina Desa Sahabat Kusta'],
             ['D02', 'Penduduk di Desa Sahabat Kusta']],
     dasarDesc: 'Penduduk di wilayah Bina Desa Sahabat Kusta.',
     output: [['D03', 'Desa yang melaksanakan lokakarya'],
-             ['D04', 'Anggota kelompok potensial yang ikut lokakarya desa'],
-             ['D05', 'Petugas puskesmas yang ikut lokakarya puskesmas']],
+             ['D04', 'Anggota Kelompok Potensial Masyarakat Desa (KPMD) yang ikut lokakarya desa'],
+             ['D05', 'Petugas Puskesmas yang ikut lokakarya puskesmas']],
     outputDesc: 'Lokakarya di desa dan di puskesmas.',
     funnelTitle: 'Dari suspek sampai kasus baru',
     funnelDesc: 'Dari suspek yang diperiksa sampai kasus baru ditemukan.',
     funnel: [['D08', 'Suspek yang diperiksa petugas kusta puskesmas', 'base'],
              ['D09', 'Kasus baru dari suspek tersebut', 'D08'],
              ['D10', 'Kasus baru yang menolak pengobatan (MDT)', 'thin']],
-    outcome: [['D06', 'Petugas puskesmas yang merujuk suspek'],
-              ['D07', 'Anggota kelompok potensial yang merujuk suspek'],
+    outcome: [['D06', 'Petugas Puskesmas yang merujuk suspek'],
+              ['D07', 'Anggota Kelompok Potensial Masyarakat Desa (KPMD) yang merujuk suspek'],
               ['D11', 'Kontak yang menolak kemoprofilaksis']],
     impact: [['D12', 'Penolakan sosial karena kusta'],
              ['D13', 'Kasus baru di seluruh Desa Sahabat Kusta'],
              ['D14', 'Kasus baru anak di seluruh Desa Sahabat Kusta'],
              ['D15', 'Kasus baru disabilitas tingkat 2']],
     impactDesc: 'Di seluruh Desa Sahabat Kusta pada periode laporan.',
-    cols: [['D02', 'Penduduk desa'], ['D05', 'Petugas ikut lokakarya'],
-           ['D04', 'Kelompok ikut lokakarya'], ['D06', 'Petugas merujuk'],
-           ['D07', 'Kelompok merujuk'], ['D08', 'Suspek diperiksa'],
+    cols: [['D02', 'Penduduk desa'], ['D05', 'Petugas Puskesmas ikut lokakarya'],
+           ['D04', 'Kelompok Potensial Masyarakat Desa (KPMD) ikut lokakarya'], ['D06', 'Petugas Puskesmas merujuk'],
+           ['D07', 'Kelompok Potensial Masyarakat Desa (KPMD) merujuk'], ['D08', 'Suspek diperiksa'],
            ['D09', 'Kasus baru dari suspek'], ['D13', 'Kasus baru di desa']],
   },
   KOTAKU: {
     full: 'KOTAKU (Kota Sahabat Kusta)',
     dasar: [['K01', 'Penduduk di wilayah padat penduduk (slum area)']],
     dasarDesc: 'Penduduk dan fasilitas kesehatan di wilayah Kota Sahabat Kusta.',
-    types: [['DPM', 'K02', 'K05'], ['Klinik (swasta dan perusahaan)', 'K03', 'K06'],
+    types: [['Praktek Mandiri Dokter, Praktek Mandiri Bidan, Perawat', 'K02', 'K05'], ['Klinik (swasta dan perusahaan)', 'K03', 'K06'],
             ['Rumah sakit (umum dan swasta)', 'K04', 'K07']],
-    output: [['K08', 'DPM, klinik, dan RS yang ikut lokakarya'],
-             ['K09', 'Petugas puskesmas yang ikut lokakarya'],
+    output: [['K08', 'Praktek Mandiri Dokter, Praktek Mandiri Bidan, Perawat, RS, Klinik swasta yang ikut lokakarya'],
+             ['K09', 'Petugas Puskesmas yang ikut lokakarya'],
              ['K10', 'Kader yang ikut orientasi kusta']],
     outputDesc: 'Lokakarya dan orientasi kusta.',
     funnelTitle: 'Rujukan sampai kasus baru',
     funnelDesc: 'Dari pihak yang merujuk, suspek dirujuk, sampai kasus baru ditemukan.',
     funnels: [['Fasilitas kesehatan swasta', 'Fasilitas yang merujuk', 'K11', 'K12', 'K13'],
-              ['Petugas puskesmas', 'Petugas yang merujuk', 'K14', 'K15', 'K16'],
+              ['Petugas Puskesmas', 'Petugas Puskesmas yang merujuk', 'K14', 'K15', 'K16'],
               ['Tokoh masyarakat', 'Tokoh yang merujuk', 'K17', 'K18', 'K19']],
     outcome: [['K20', 'Kasus yang ditangani fasilitas swasta'],
               ['K21', 'Pasien dengan komplikasi yang dirujuk']],
     impact: [['K23', 'Kasus baru kusta'], ['K24', 'Kasus baru anak (<15 th)'],
              ['K25', 'Kasus baru disabilitas tingkat 2'], ['K26', 'Penolakan sosial karena kusta']],
     impactDesc: 'Di seluruh Kota Sahabat Kusta pada periode laporan.',
-    cols: [['K01', 'Penduduk slum'], ['FAS', 'Faskes swasta'], ['K09', 'Petugas ikut lokakarya'],
-           ['K10', 'Kader ikut orientasi'], ['K13', 'Rujukan faskes'], ['K16', 'Rujukan petugas'],
+    cols: [['K01', 'Penduduk slum'], ['FAS', 'Fasilitas Kesehatan'], ['K09', 'Petugas Puskesmas ikut lokakarya'],
+           ['K10', 'Kader ikut orientasi'], ['K13', 'Rujukan Fasilitas Kesehatan'], ['K16', 'Rujukan Petugas Puskesmas'],
            ['K19', 'Rujukan tokoh'], ['K23', 'Kasus baru']],
   },
 };
@@ -333,7 +336,7 @@ function renderPeta() {
       <div class="panel">
         <h3>Kasus baru ${periodLabel(p, y)} ${y}</h3>
         <div class="legend">
-          <span><i style="background:${C.teal}"></i>DESAKU</span>
+          <span><i style="background:${C.teal}"></i>Bina DESAKU</span>
           <span><i style="background:${C.orange}"></i>KOTAKU</span>
           <span><i style="background:#9aa8a6"></i>Puskesmas lain</span>
         </div>
@@ -364,7 +367,7 @@ function renderPeta() {
 }
 
 function grpTag(g) {
-  if (g === 'DESAKU') return '<span class="tag d">DESAKU</span>';
+  if (g === 'DESAKU') return '<span class="tag d">Bina DESAKU</span>';
   if (g === 'KOTAKU') return '<span class="tag k">KOTAKU</span>';
   return '<span class="tag l">Lain</span>';
 }
@@ -386,7 +389,7 @@ function drawMap(elId, ref, byName) {
     bounds.push([p.lat, p.lng]);
     L.circleMarker([p.lat, p.lng], { radius, color: '#fff', weight: 1.2,
       fillColor: color(p.group), fillOpacity: r.baru ? 0.82 : 0.35 })
-      .bindPopup(`<b>${esc(p.name)}</b><br>${p.group}<br>Kasus baru: <b>${nf(r.baru)}</b><br>Anak: ${nf(r.anak)}`)
+      .bindPopup(`<b>${esc(p.name)}</b><br>${dn(p.group)}<br>Kasus baru: <b>${nf(r.baru)}</b><br>Anak: ${nf(r.anak)}`)
       .addTo(map);
   });
   if (bounds.length) map.fitBounds(bounds, { padding: [30, 30] });
@@ -484,11 +487,11 @@ function renderEliminasi() {
    TAB: Puskesmas intervensi (sub-tabs)
    ===================================================================== */
 function renderIntervensi() {
-  const subs = [['ringkasan', 'Ringkasan intervensi'], ['desaku', 'Indikator DESAKU'],
+  const subs = [['ringkasan', 'Ringkasan intervensi'], ['desaku', 'Indikator Bina DESAKU'],
                 ['kotaku', 'Indikator KOTAKU'], ['peta-desa', 'Peta per desa']];
   const head = `
     <h2 class="page-title">Puskesmas intervensi Comprehensive Zero Leprosy</h2>
-    <p class="page-desc">20 dari ${D.puskesmas.length} puskesmas di Karawang: 10 puskesmas <b>DESAKU</b> (Desa Sahabat Kusta / Leprosy Friendly Village) dan 10 puskesmas <b>KOTAKU</b> (Kota Sahabat Kusta / Urban Leprosy).</p>
+    <p class="page-desc">20 dari ${D.puskesmas.length} puskesmas di Karawang: 10 puskesmas <b>Bina DESAKU</b> (Desa Sahabat Kusta / Leprosy Friendly Village) dan 10 puskesmas <b>KOTAKU</b> (Kota Sahabat Kusta / Urban Leprosy).</p>
     <div class="subtabs">${subs.map(s => `<button data-sub="${s[0]}" class="${S.sub === s[0] ? 'active' : ''}">${s[1]}</button>`).join('')}</div>
     <div id="subview"></div>`;
   $('#view').innerHTML = head;
@@ -510,7 +513,7 @@ function subRingkasanIntervensi() {
   };
   const D1 = agg(grpOf('DESAKU')), K1 = agg(grpOf('KOTAKU')), L1 = agg(grpOf('Lain')), ALL = agg(rows);
   const rft = D.rft[y] || { byGroup: {} };
-  const cols = [['DESAKU', D1, rft.byGroup.DESAKU], ['KOTAKU', K1, rft.byGroup.KOTAKU],
+  const cols = [['Bina DESAKU', D1, rft.byGroup.DESAKU], ['KOTAKU', K1, rft.byGroup.KOTAKU],
                ['Puskesmas lain', L1, rft.byGroup.Lain], ['Seluruh Karawang', ALL, rft.kab]];
 
   const metrics = [
@@ -551,11 +554,11 @@ function subRingkasanIntervensi() {
       <div class="foot">RFT dihitung untuk kusta MB dari kohort ${rft.cohortYear || '-'} (kasus baru MB ${rft.cohortYear || ''} yang sudah dinilai). Angka per 100.000 untuk periode terpilih.</div>
     </div>
     <div class="panel" style="margin-bottom:16px"><h3>Kasus baru per bulan, ${y}
-      <span style="float:right;font-size:13px;font-weight:600"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${C.teal};margin-right:5px"></i>DESAKU
+      <span style="float:right;font-size:13px;font-weight:600"><i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${C.teal};margin-right:5px"></i>Bina DESAKU
       <i style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${C.orange};margin:0 5px 0 12px"></i>KOTAKU</span></h3>
-      ${groupBars(monItems, [{ name: 'DESAKU', color: C.teal }, { name: 'KOTAKU', color: C.orange }])}
+      ${groupBars(monItems, [{ name: 'Bina DESAKU', color: C.teal }, { name: 'KOTAKU', color: C.orange }])}
     </div>
-    <div class="two">${miniTable('DESAKU', C.teal, dRows)}${miniTable('KOTAKU', C.orange, kRows)}</div>
+    <div class="two">${miniTable('Bina DESAKU', C.teal, dRows)}${miniTable('KOTAKU', C.orange, kRows)}</div>
     ${srcLine('Data per 100.000 memakai penduduk Data Dasar SIPK; beberapa nilai penduduk yang tertulis sama persis antar puskesmas perlu dicek.')}`;
   $('#subview').innerHTML = html;
   bindFilters();
@@ -641,8 +644,7 @@ function subIndicator(prog) {
       const m = D.periode.find(x => x.periode === p) || {}; return { v: p, t: m.label || p };
     }), per)])}
     ${sections}
-    <div class="panel" style="margin-top:16px"><h3>Capaian per puskesmas ${prog}, ${periodMeta.label || per}</h3>${tableFor(per)}</div>
-    ${other ? `<div class="panel" style="margin-top:16px"><h3>Capaian per puskesmas ${prog}, ${(D.periode.find(x => x.periode === other) || {}).label || other}</h3>${tableFor(other)}</div>` : ''}
+    <div class="panel" style="margin-top:16px"><h3>Capaian per puskesmas ${dn(prog)}, ${periodMeta.label || per}</h3>${tableFor(per)}</div>
     ${srcLine('Laporan Triwulan Bina Desa/Kota Sahabat Kusta Kabupaten Karawang, diinput oleh tim program. Indikator mengikuti Lampiran 4. Y1 adalah data setahun; triwulan tidak bisa langsung dijumlahkan atau dibandingkan dengan Y1.')}`;
   $('#subview').innerHTML = html;
   const sel = $('#fIndP'); if (sel) sel.onchange = () => { S.indPeriod = sel.value; renderIntervensi(); };
@@ -659,14 +661,14 @@ function subPetaDesa() {
   const html = `
     <div class="note"><b>Peta per desa belum tersedia.</b> Register SIPK saat ini belum memuat kolom desa, jadi kasus belum bisa dipetakan sampai tingkat desa. Untuk mengaktifkan halaman ini, tambahkan kolom <b>desa</b> dan koordinat desa di Google Sheets untuk 20 puskesmas intervensi. Sementara itu, halaman ini menampilkan posisi dan jumlah kasus di tingkat puskesmas.</div>
     ${filtersRow([
-      fieldSel('Puskesmas intervensi', 'fDesa', interv.map(p => ({ v: p.name, t: p.name + ' (' + p.group + ')' })), sel.name),
+      fieldSel('Puskesmas intervensi', 'fDesa', interv.map(p => ({ v: p.name, t: p.name + ' (' + dn(p.group) + ')' })), sel.name),
       fieldSel('Tahun', 'fY', yearOpts(), y)])}
     <div class="two" style="grid-template-columns:1.6fr 1fr">
       <div class="panel"><h3>Lokasi Puskesmas ${esc(sel.name)}</h3><div id="map-desa"></div>
         <div class="foot">Peta tingkat puskesmas. Breakdown per desa akan muncul di sini setelah kolom desa ditambahkan ke register.</div></div>
       <div class="panel"><h3>Ringkasan ${esc(sel.name)}</h3>
         <div class="cards" style="grid-template-columns:1fr">
-          <div class="card kpi"><div class="lbl">Kelompok intervensi</div><div class="val" style="font-size:24px">${sel.group}</div></div>
+          <div class="card kpi"><div class="lbl">Kelompok intervensi</div><div class="val" style="font-size:24px">${dn(sel.group)}</div></div>
           <div class="card kpi"><div class="lbl">Kasus baru ${y}</div><div class="val">${nf(c.baru)}</div></div>
           <div class="card kpi"><div class="lbl">Kasus baru anak (&lt;15 th)</div><div class="val">${nf(c.anak)}</div></div>
         </div>
