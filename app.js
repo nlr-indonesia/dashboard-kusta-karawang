@@ -27,6 +27,9 @@ const PERIOD_MONTHS = {
   Q1: [1,2,3], Q2: [4,5,6], Q3: [7,8,9], Q4: [10,11,12],
 };
 
+/* periode data sumber yang tampil di catatan sumber; ubah tiap kali register baru dimuat */
+const SUMBER_PER = 'September 2026';
+
 /* nama tampilan program (kode data tetap 'DESAKU') */
 const dn = g => g === 'DESAKU' ? 'Bina DESAKU' : g;
 
@@ -706,7 +709,7 @@ function dataThrough() {
   return MONTHS[dt.month - 1] + ' ' + dt.year;
 }
 function srcLine(extra) {
-  return `<div class="src">Sumber: register SIPK Karawang, diolah. Data anonim tanpa nama dan alamat pasien.
+  return `<div class="src">Sumber: Data Anonim Register SIPK Karawang per ${SUMBER_PER}, diolah menjadi angka agregat. Tanpa nama dan alamat pasien.
     Diperbarui otomatis; pembaruan terakhir ${fmtGen(D.meta.generated_at)}. ${extra || ''}</div>`;
 }
 function fmtGen(iso) {
