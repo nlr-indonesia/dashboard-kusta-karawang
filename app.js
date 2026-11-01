@@ -491,7 +491,10 @@ function renderEliminasi() {
    ===================================================================== */
 function renderIntervensi() {
   const subs = [['ringkasan', 'Ringkasan intervensi'], ['desaku', 'Indikator Bina DESAKU'],
-                ['kotaku', 'Indikator KOTAKU'], ['peta-desa', 'Peta per desa']];
+                ['kotaku', 'Indikator KOTAKU']];
+  // Sub-halaman "Peta per desa" disembunyikan sementara (data desa belum lengkap).
+  // Untuk menampilkannya lagi: tambahkan ['peta-desa', 'Peta per desa'] ke daftar subs di atas.
+  if (S.sub === 'peta-desa') S.sub = 'ringkasan';
   const head = `
     <h2 class="page-title">Puskesmas intervensi Comprehensive Zero Leprosy</h2>
     <p class="page-desc">20 dari ${D.puskesmas.length} puskesmas di Karawang: 10 puskesmas <b>Bina DESAKU</b> (Desa Sahabat Kusta / Leprosy Friendly Village) dan 10 puskesmas <b>KOTAKU</b> (Kota Sahabat Kusta / Urban Leprosy).</p>
@@ -502,7 +505,7 @@ function renderIntervensi() {
   if (S.sub === 'ringkasan') subRingkasanIntervensi();
   else if (S.sub === 'desaku') subIndicator('DESAKU');
   else if (S.sub === 'kotaku') subIndicator('KOTAKU');
-  else subPetaDesa();
+  else subPetaDesa(); // hanya terpanggil bila sub 'peta-desa' diaktifkan lagi
 }
 
 function subRingkasanIntervensi() {
