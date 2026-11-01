@@ -349,6 +349,14 @@ function renderPeta() {
         <div class="foot">${nf(intervBaru)} dari ${nf(totBaru)} kasus baru (${pct(intervBaru, totBaru)}) ada di 20 puskesmas intervensi.</div>
       </div>
     </div>
+    <h2 class="page-title" style="margin-top:28px">Sebaran desa endemis per kecamatan</h2>
+    <div class="panel">
+      <h3>Peta sebaran desa endemis kusta per kecamatan</h3>
+      <a href="img/peta-desa-endemis.png" target="_blank" rel="noopener">
+        <img src="img/peta-desa-endemis.png" alt="Peta sebaran desa endemis kusta per kecamatan, Kabupaten Karawang. Merah: 75% atau lebih desa endemis; oranye 50-74%; kuning 25-49%; hijau di bawah 25%." style="width:100%;height:auto;border-radius:10px;display:block">
+      </a>
+      <div class="foot">Data SIPK (kasus MB) sampai September 2026. Desa endemis: ada kasus baru dewasa dalam 3 tahun atau kasus baru anak dalam 5 tahun. Angka pada peta = desa endemis / total desa. Merah 14 kecamatan, oranye 8, kuning 6, hijau 2; total 203 dari 309 desa/kelurahan. Gambar ini statis dan tidak berubah mengikuti filter di atas. Klik gambar untuk memperbesar.</div>
+    </div>
     ${srcLine(`${ranked.length} dari ${D.puskesmas.length} puskesmas melaporkan kasus baru pada periode ini.`)}`;
   $('#view').innerHTML = html;
   bindFilters();

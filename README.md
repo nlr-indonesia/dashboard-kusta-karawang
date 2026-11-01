@@ -45,6 +45,7 @@ Google Sheets (data mentah)  ──►  build.py  ──►  data.json (hanya ag
 | `build.py` | Menarik data dari Sheets → menghitung agregat → `data.json` |
 | `data.json` | Hasil agregat (dibuat ulang tiap refresh) |
 | `vendor/` | Pustaka peta Leaflet (disertakan, tanpa CDN) |
+| `img/peta-desa-endemis.png` | Peta desa endemis per kecamatan (gambar statis, diganti manual saat ada versi baru) |
 | `.github/workflows/refresh.yml` | Jadwal refresh + penerbitan otomatis |
 
 ---
