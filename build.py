@@ -162,13 +162,18 @@ def compute(data):
         y, m = ym(r)
         if not y:
             continue
-        ky = kab_yearly.setdefault(y, {"total": 0, "anak": 0, "dewasa": 0})
+        ky = kab_yearly.setdefault(y, {"total": 0, "anak": 0, "dewasa": 0, "PB": 0, "MB": 0})
         ky["total"] += 1
+        tp = (r.get("tipe") or "").strip().upper()
+        if tp in ("PB", "MB"):
+            ky[tp] += 1
         ky["anak" if is_anak(r) else "dewasa"] += 1
         if m:
             km = kab_monthly.setdefault(y, {})
-            cell = km.setdefault(str(m), {"total": 0, "anak": 0})
+            cell = km.setdefault(str(m), {"total": 0, "anak": 0, "PB": 0, "MB": 0})
             cell["total"] += 1
+            if tp in ("PB", "MB"):
+                cell[tp] += 1
             if is_anak(r):
                 cell["anak"] += 1
 

@@ -122,6 +122,27 @@ function vbars(items, { h = 230, hiColor = C.orange, color = C.teal } = {}) {
   return s;
 }
 
+function stackBars(items, { h = 270 } = {}) {
+  // items:[{label, mb, pb, hi, faint}] — batang bertumpuk MB (bawah) + PB (atas), total di atas batang
+  const n = items.length, colw = 60, top = 24, bot = 62, ph = h - top - bot;
+  const max = Math.max(1, ...items.map(d => d.mb + d.pb));
+  let s = `<div class="chart"><svg viewBox="0 0 ${n * colw} ${h}" style="width:100%;height:${h}px">`;
+  items.forEach((d, i) => {
+    const x = i * colw + colw / 2, tot = d.mb + d.pb;
+    const mbH = d.mb / max * ph, pbH = d.pb / max * ph, yb = top + ph;
+    const op = d.faint ? ' opacity=".75"' : '';
+    if (d.mb) s += `<rect x="${x - 15}" y="${yb - mbH}" width="30" height="${mbH}" rx="3" fill="${d.hi ? C.orange : C.teal}"${op}/>`;
+    if (d.pb) s += `<rect x="${x - 15}" y="${yb - mbH - pbH}" width="30" height="${pbH}" rx="3" fill="${C.light}"${op}/>`;
+    s += `<text x="${x}" y="${yb - mbH - pbH - 7}" text-anchor="middle" class="bar-val">${nf(tot)}</text>`;
+    s += `<text x="${x}" y="${h - 40}" text-anchor="middle" class="bar-lbl">${esc(d.label)}</text>`;
+    s += `<text x="${x}" y="${h - 23}" text-anchor="middle" class="bar-lbl" style="fill:${C.teal};font-weight:700">${nf(d.mb)}</text>`;
+    s += `<text x="${x}" y="${h - 7}" text-anchor="middle" class="bar-lbl" style="fill:#5a9a97;font-weight:700">${nf(d.pb)}</text>`;
+  });
+  s += '</svg></div>';
+  s += `<div class="legend" style="margin-top:4px"><span><i style="background:${C.teal}"></i>MB (angka baris pertama di bawah bulan/tahun)</span><span><i style="background:${C.light}"></i>PB (angka baris kedua)</span></div>`;
+  return s;
+}
+
 function groupBars(items, series, { h = 240 } = {}) {
   // items:[{label, vals:[a,b]}], series:[{name,color}]
   const n = items.length, colw = 90, gap = 6, bw = 28;
@@ -222,12 +243,12 @@ function renderRingkasan() {
 
   // monthly chart
   const mm = (D.kab.monthly[y]) || {};
-  const monthItems = PERIOD_MONTHS[p].map(m => ({ label: MONTHS[m - 1], value: ((mm[String(m)]) || {}).total || 0 }));
+  const monthItems = PERIOD_MONTHS[p].map(m => { const c = mm[String(m)] || {}; return { label: MONTHS[m - 1], value: c.total || 0, mb: c.MB || 0, pb: c.PB || 0 }; });
   const maxM = Math.max(...monthItems.map(d => d.value));
   monthItems.forEach(d => { if (d.value === maxM && maxM > 0 && monthItems.filter(x => x.value === maxM).length === 1) d.hi = true; });
   // yearly chart
   const yearItems = D.meta.years.map(yr => ({ label: yr === D.meta.latest_year ? yr + '*' : yr,
-    value: (D.kab.yearly[yr] || {}).total || 0, faint: yr === D.meta.latest_year }));
+    value: (D.kab.yearly[yr] || {}).total || 0, mb: (D.kab.yearly[yr] || {}).MB || 0, pb: (D.kab.yearly[yr] || {}).PB || 0, faint: yr === D.meta.latest_year }));
 
   // top puskesmas
   const rows = pkmRows(y, p).filter(r => r.baru > 0).sort((a, b) => b.baru - a.baru);
@@ -238,11 +259,11 @@ function renderRingkasan() {
     <div class="cards">${kpis.map(kpiCard).join('')}</div>
     <div class="two" style="margin-bottom:16px">
       <div class="panel"><h3>Kasus baru per bulan, ${y}</h3>
-        ${vbars(monthItems)}
+        ${stackBars(monthItems)}
         <div class="foot">Batang oranye adalah bulan dengan kasus terbanyak. Lonjakan satu bulan perlu dicek ke puskesmas: apakah ada kegiatan penemuan kasus atau input yang menumpuk.</div>
       </div>
       <div class="panel"><h3>Kasus baru per tahun</h3>
-        ${vbars(yearItems.map(d => ({ ...d, hi: false })), {})}
+        ${stackBars(yearItems.map(d => ({ ...d, hi: false })))}
         <div class="foot">* ${D.meta.latest_year} belum tahun penuh (data sampai ${dataThrough()}). Angka tahun lama berasal dari register; kelengkapannya perlu dicek.</div>
       </div>
     </div>
