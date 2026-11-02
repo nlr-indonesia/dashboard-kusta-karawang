@@ -513,7 +513,7 @@ function renderEliminasi() {
    TAB: Puskesmas intervensi (sub-tabs)
    ===================================================================== */
 function renderIntervensi() {
-  const subs = [['ringkasan', 'Ringkasan intervensi'], ['desaku', 'Indikator Bina DESAKU'],
+  const subs = [['ringkasan', 'Data Kasus'], ['desaku', 'Indikator Bina DESAKU'],
                 ['kotaku', 'Indikator KOTAKU']];
   // Sub-halaman "Peta per desa" disembunyikan sementara (data desa belum lengkap).
   // Untuk menampilkannya lagi: tambahkan ['peta-desa', 'Peta per desa'] ke daftar subs di atas.
